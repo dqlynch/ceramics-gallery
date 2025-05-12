@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
