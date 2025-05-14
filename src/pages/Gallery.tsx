@@ -1,38 +1,37 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import Masonry from 'react-masonry-css';
 
 const GalleryContainer = styled.div`
   max-width: 1600px;
   margin: 0 auto;
-  padding: ${props => props.theme.spacing.lg};
+  padding: 2% 2% 2% 2%;
 `;
 
-const GalleryItem = styled.div`
-  margin-bottom: ${props => props.theme.spacing.md};
-  break-inside: avoid;
+const GalleryGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+`;
+
+const GalleryItem = styled.div<{ $isLandscape: boolean }>`
+  grid-column: ${props => props.$isLandscape ? 'span 2' : 'span 1'};
+  aspect-ratio: ${props => props.$isLandscape ? '1.625532' : '0.8'};
+  overflow: hidden;
 `;
 
 const GalleryImage = styled.img`
   width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 8px;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 `;
 
 interface ImageWithSize {
   src: string;
   width: number;
   height: number;
+  isLandscape: boolean;
 }
-
-const breakpointColumns = {
-  default: 4,
-  1600: 4,
-  1200: 3,
-  900: 2,
-  600: 1
-};
 
 const Gallery = () => {
   const [images, setImages] = useState<ImageWithSize[]>([]);
@@ -40,7 +39,6 @@ const Gallery = () => {
   useEffect(() => {
     const loadImages = async () => {
       try {
-        // List of images in the gallery directory
         const imageFiles = [
           '/images/gallery/1.jpg',
           '/images/gallery/2.jpg',
@@ -55,10 +53,12 @@ const Gallery = () => {
           return new Promise<ImageWithSize>((resolve) => {
             const img = new Image();
             img.onload = () => {
+              const aspectRatio = img.width / img.height;
               resolve({ 
                 src, 
                 width: img.width, 
-                height: img.height
+                height: img.height,
+                isLandscape: aspectRatio > 1.5
               });
             };
             img.onerror = () => {
@@ -66,7 +66,8 @@ const Gallery = () => {
               resolve({ 
                 src, 
                 width: 1, 
-                height: 1
+                height: 1,
+                isLandscape: false
               }); // Fallback
             };
             img.src = src;
@@ -85,20 +86,20 @@ const Gallery = () => {
 
   return (
     <GalleryContainer>
-      <Masonry
-        breakpointCols={breakpointColumns}
-        className="masonry-grid"
-        columnClassName="masonry-grid_column"
-      >
+      <GalleryGrid>
         {images.map((image, index) => (
-          <GalleryItem key={index}>
+          <GalleryItem 
+            key={index}
+            $isLandscape={image.isLandscape}
+          >
             <GalleryImage 
               src={image.src} 
               alt={`Gallery image ${index + 1}`}
+              loading="lazy"
             />
           </GalleryItem>
         ))}
-      </Masonry>
+      </GalleryGrid>
     </GalleryContainer>
   );
 };
