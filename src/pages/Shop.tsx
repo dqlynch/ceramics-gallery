@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
+import { products } from '../data/products';
 
 const ShopContainer = styled.div`
   max-width: 1200px;
@@ -22,7 +23,7 @@ const ProductGrid = styled.div`
   gap: ${props => props.theme.spacing.lg};
 `;
 
-const ProductCard = styled(motion.div)`
+const ProductCard = styled.div`
   background: ${props => props.theme.colors.background};
   border-radius: 8px;
   overflow: hidden;
@@ -66,23 +67,17 @@ const ProductPrice = styled.p`
   font-size: 0.9rem;
 `;
 
-// Sample data - in a real app, this would come from an API or database
-const products = [
-  {
-    id: 1,
-    title: 'Teapot 2',
-    image: '/images/teapot-2/PXL_20250509_161010892.jpg',
-    dimensions: '15cm x 12cm',
-    price: '$120',
-  },
-  {
-    id: 2,
-    title: 'Horse Hair Raku Bud Vases',
-    image: '/images/horse-hair-raku-pair/PXL_20250503_190720260.PORTRAIT.jpg',
-    dimensions: '20cm x 15cm',
-    price: '$140',
-  }
-];
+const ProductDimensions = styled.p`
+  color: ${props => props.theme.colors.secondary};
+  margin: 0;
+  font-size: 0.9rem;
+`;
+
+const ProductLink = styled(Link)`
+  text-decoration: none;
+`;
+
+const MotionProductCard = motion(ProductCard);
 
 const Shop = () => {
   return (
@@ -90,25 +85,20 @@ const Shop = () => {
       <ShopTitle>Shop</ShopTitle>
       <ProductGrid>
         {products.map((product) => (
-          <Link
+          <MotionProductCard
             key={product.id}
-            to={`/product/${product.id}`}
-            style={{ textDecoration: 'none' }}
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
           >
-            <ProductCard
-              whileHover={{ y: -5 }}
-              transition={{ duration: 0.2 }}
-            >
-              <ProductImage src={product.image} alt={product.title} />
+            <ProductLink to={`/product/${product.id}`}>
+              <ProductImage src={product.mainImage} alt={product.title} />
               <ProductInfo>
-                <ProductHeader>
-                  <ProductTitle>{product.title}</ProductTitle>
-                  <ProductPrice>{product.price}</ProductPrice>
-                </ProductHeader>
-                <ProductDetails>{product.dimensions}</ProductDetails>
+                <ProductTitle>{product.title}</ProductTitle>
+                <ProductPrice>{product.price}</ProductPrice>
+                <ProductDimensions>{product.dimensions}</ProductDimensions>
               </ProductInfo>
-            </ProductCard>
-          </Link>
+            </ProductLink>
+          </MotionProductCard>
         ))}
       </ProductGrid>
     </ShopContainer>

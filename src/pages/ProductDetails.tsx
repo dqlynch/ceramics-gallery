@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { products } from '../data/products';
 
 const DetailsContainer = styled.div`
   max-width: 1200px;
@@ -96,70 +97,9 @@ const Price = styled.div`
   margin-bottom: ${props => props.theme.spacing.lg};
 `;
 
-interface Product {
-  title: string;
-  mainImage: string;
-  gallery: string[];
-  dimensions: string;
-  price: string;
-  description: string;
-  material: string;
-  technique: string;
-  glazing: string;
-}
-
-interface ProductData {
-  [key: number]: Product;
-}
-
-const productData: ProductData = {
-  1: {
-    title: 'Teapot 2',
-    mainImage: '/images/teapot-2/PXL_20250509_161010892.jpg',
-    gallery: [
-      '/images/teapot-2/PXL_20250509_161010892.jpg',
-      '/images/teapot-2/PXL_20250509_160933124.jpg',
-    ],
-    dimensions: '15cm x 12cm',
-    price: '$120',
-    description: 'A beautifully crafted teapot with a unique glaze pattern. The ergonomic handle and spout design ensures a perfect pour every time.',
-    material: 'Stoneware (SPS Eclipse)',
-    technique: 'Hand-thrown',
-    glazing: 'Custom glaze blend',
-  },
-  2: {
-    title: 'Horse Hair Raku Bud Vases',
-    mainImage: '/images/horse-hair-raku-pair/PXL_20250503_190720260.PORTRAIT.jpg',
-    gallery: [
-      '/images/horse-hair-raku-pair/PXL_20250503_190720260.PORTRAIT.jpg',
-    ],
-    dimensions: '20cm x 15cm',
-    price: '$140',
-    description: 'A stunning pair of horse hair raku bud vases, each with unique carbon patterns created through the traditional raku firing process.',
-    material: 'Raku clay',
-    technique: 'Raku firing with horse hair',
-    glazing: 'Natural carbon patterns',
-  },
-  3: {
-    title: 'Blue Vase',
-    mainImage: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=500&auto=format',
-    gallery: [
-      'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=500&auto=format',
-      'https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?w=500&auto=format',
-      'https://images.unsplash.com/photo-1579783902223-72b171dfe989?w=500&auto=format',
-    ],
-    dimensions: '20cm x 15cm',
-    price: '$120',
-    description: 'A beautiful handcrafted blue vase with intricate patterns. Perfect for displaying fresh flowers or as a standalone decorative piece.',
-    material: 'Ceramic',
-    technique: 'Hand-thrown',
-    glazing: 'Matte finish',
-  },
-};
-
 const ProductDetails = () => {
   const { id } = useParams();
-  const product = productData[Number(id)];
+  const product = products.find(p => p.id === Number(id));
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   if (!product) {
