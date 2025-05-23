@@ -41,23 +41,10 @@ const ProductInfo = styled.div`
   padding: ${props => props.theme.spacing.md};
 `;
 
-const ProductHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${props => props.theme.spacing.xs};
-`;
-
 const ProductTitle = styled.h3`
   font-size: 1.2rem;
   margin: 0;
   color: ${props => props.theme.colors.primary};
-`;
-
-const ProductDetails = styled.p`
-  color: ${props => props.theme.colors.secondary};
-  margin: 0;
-  font-size: 0.9rem;
 `;
 
 const ProductPrice = styled.p`
