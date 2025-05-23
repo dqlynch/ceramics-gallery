@@ -79,6 +79,7 @@ const ProductDescription = styled.p`
   color: ${props => props.theme.colors.text};
   margin-bottom: ${props => props.theme.spacing.lg};
   line-height: 1.6;
+  white-space: pre-wrap;
 `;
 
 const ProductDetailsSection = styled.div`
