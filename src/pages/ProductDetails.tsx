@@ -97,6 +97,14 @@ const ProductDetailsSection = styled.div`
 const DetailItem = styled.div`
   color: ${props => props.theme.colors.text};
   font-size: 0.9rem;
+  display: flex;
+  gap: ${props => props.theme.spacing.sm};
+  flex-wrap: wrap;
+`;
+
+const DetailSeparator = styled.span`
+  color: ${props => props.theme.colors.text};
+  opacity: 0.5;
 `;
 
 const Price = styled.div`
@@ -454,7 +462,11 @@ const ProductDetails = () => {
           <ProductDescription>{product.description}</ProductDescription>
           <ProductDetailsSection>
             <DetailItem>
-              {product.dimensions} • {product.material}
+              {product.dimensions}
+              <DetailSeparator>•</DetailSeparator>
+              {product.material}
+              <DetailSeparator>•</DetailSeparator>
+              {product.firing_type}
             </DetailItem>
           </ProductDetailsSection>
           <InstagramSection>

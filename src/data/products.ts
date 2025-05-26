@@ -8,6 +8,7 @@ export interface Product {
   description: string;
   material: string;
   videos?: string[];
+  firing_type: string;
 }
 
 export const products: Product[] = [
@@ -29,6 +30,7 @@ export const products: Product[] = [
     price: '$80',
     description: 'Smaller angular teapot. The unglazed outside shows off the beautiful raw clay body of Seattle Pottery Supply\'s Eclipse clay. The inner gallery fits an included 75mm inset stainless steel strainer. Pours really well and is my current goto teapot for a single cup of tea.\n\nUnglazed outside with Orchid liner glaze inside. Food, microwave, and dishwasher safe.',
     material: 'Stoneware (SPS Eclipse)',
+    firing_type: '∆5',
   },
   {
     id: 2,
@@ -41,10 +43,14 @@ export const products: Product[] = [
       '/images/horse-hair-raku-pair/4.jpg',
       '/images/horse-hair-raku-pair/5.jpg',
     ],
+    videos: [
+      '/images/horse-hair-raku-pair/6.mp4',
+    ],
     dimensions: '6" x 6"',
     price: '$90',
     description: 'A pair of bud vases. I made these as part of a Raku workshop with SPS. The pieces were removed from the kiln while still hot—around 1600F—and then horse hair was manually burned onto the surface. The resulting soot is trapped in the clay and leaves unique patterns.\n\nRaku pieces are not fully vitrified and are not food safe. The clay will absorb water slowly over time.',
     material: 'Stoneware (SPS Raku II)',
+    firing_type: 'Raku Firing',
   },
   {
     id: 3,
@@ -64,6 +70,7 @@ export const products: Product[] = [
     price: '$60',
     description: 'A medium sized teapot, perfect for sharing tea or having a couple cups. The outside is left unglazed to show off the smooth, rich brown clay body, and to contrast the bright Carribean liner glaze. The inner gallery fits an included 75mm inset stainless steel strainer.\n\nFood, microwave, and dishwasher safe.',
     material: 'Stoneware (Klamath Brown)',
+    firing_type: '∆5',
   },
   {
     id: 4,
@@ -78,6 +85,7 @@ export const products: Product[] = [
     price: '$25',
     description: 'Large dark blue bowl with flux splattered on the rim. The flux drips and interacts with the base Stormy Night glaze during firing, creating interesting and dynamic patterns. It came out a bit oblong, but serves as a great decorative pot around a nursery pot or serving bowl.\n\nFood, microwave, and dishwasher safe.',
     material: 'Stoneware (Klamath Brown)',
+    firing_type: '∆5',
   },
   {
     id: 5,
@@ -97,6 +105,7 @@ export const products: Product[] = [
     price: '$50',
     description: 'Another vase made during SPS\'s Raku workshop. This was made with a white crackle glaze. The piece is removed from the kiln while still hot. We blow on the glaze, rapidly cooling it and creating cracks as it shrinks. It\'s then placed in a reduction environment with combustible materials to finish cooling. The soot produced in the reduction environment is trapped in the clay, adding a smokey contrast in the web of cracks across the surface.\n\nRaku pieces are not fully vitrified and are not food safe. The clay will absorb water slowly over time.',
     material: 'Stoneware (SPS Raku II)',
+    firing_type: 'Raku Firing',
   },
   {
     id: 6,
@@ -111,6 +120,7 @@ export const products: Product[] = [
     price: '$20',
     description: 'Vase with an unglazed textured surface. Sodium silicate is applied to the piece on the wheel, drying the outside surface. The vase is then shaped from the inside, expanding and cracking the outer layer to create the distinctive cracked-mud surface.\n\nNot food safe due to the metallic outer glaze.',
     material: 'Stoneware (Klamath Brown)',
+    firing_type: '∆5',
   },
   {
     id: 7,
@@ -124,6 +134,7 @@ export const products: Product[] = [
     price: '$30',
     description: 'A small flower vase. An early piece of mine but maybe the first form I was proud of. Some spiral cracking on the bottom, but still water-tight.\n\nFood, microwave, and dishwasher safe.',
     material: 'Stoneware (SPS Sea Mix 6)',
+    firing_type: '∆5',
   },
   {
     id: 8,
@@ -137,6 +148,7 @@ export const products: Product[] = [
     price: '$75',
     description: 'A pale blue bud vase with a carved hummingbird. The hummingbird was carved into the greenware after trimming, and then underglazed between two bisque firings. A mix of three celadon glazes was applied separately to each part of the hummingbird to get the final coloring. You can still see and feel the carved texture through the celadon glazes.\n\nFood, microwave, and dishwasher safe.',
     material: 'Porcelain (Dove)',
+    firing_type: '∆5',
   },
   {
     id: 9,
@@ -156,5 +168,6 @@ export const products: Product[] = [
     price: '$45',
     description: 'A small planter created during SPS\'s Raku workshop. The piece is removed from the kiln while still hot and placed directly into a reduction environment. The smoke interacts with the molten copper glaze to create interesting patterns. This planter has a hole at the bottom for drainage.\n\nNot food safe due to the copper glaze.',
     material: 'Stoneware (SPS Raku II), Copper glaze',
+    firing_type: 'Raku Firing',
   }
 ]; 
