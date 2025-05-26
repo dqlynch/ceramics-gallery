@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { products } from '../data/products';
 
 const DetailsContainer = styled.div`
@@ -126,6 +126,10 @@ const VideoThumbnailImage = styled.img`
   object-fit: cover;
 `;
 
+const VideoThumbnailCanvas = styled.canvas`
+  display: none;
+`;
+
 const PlayButton = styled.div`
   position: absolute;
   top: 50%;
@@ -177,11 +181,120 @@ const MainMediaContainer = styled.div`
   grid-column: span 2;
 `;
 
+const LoadingOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+`;
+
 const ProductDetails = () => {
   const { id } = useParams();
   const product = products.find(p => p.id === Number(id));
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const [videoThumbnails, setVideoThumbnails] = useState<{ [key: string]: string }>({});
+  const [loadingThumbnails, setLoadingThumbnails] = useState<{ [key: string]: boolean }>({});
+  const videoRefs = useRef<{ [key: string]: HTMLVideoElement }>({});
+
+  const getCachedThumbnail = (video: string): string | null => {
+    try {
+      const cached = localStorage.getItem(`video-thumbnail-${video}`);
+      if (cached) {
+        const { timestamp, dataUrl } = JSON.parse(cached);
+        // Cache for 24 hours
+        if (Date.now() - timestamp < 24 * 60 * 60 * 1000) {
+          return dataUrl;
+        }
+      }
+    } catch (error) {
+      console.error('Error reading from cache:', error);
+    }
+    return null;
+  };
+
+  const setCachedThumbnail = (video: string, dataUrl: string) => {
+    try {
+      localStorage.setItem(`video-thumbnail-${video}`, JSON.stringify({
+        timestamp: Date.now(),
+        dataUrl
+      }));
+    } catch (error) {
+      console.error('Error writing to cache:', error);
+    }
+  };
+
+  const generateVideoThumbnail = (video: string) => {
+    return new Promise<string>((resolve) => {
+      // Check cache first
+      const cached = getCachedThumbnail(video);
+      if (cached) {
+        resolve(cached);
+        return;
+      }
+
+      const videoElement = document.createElement('video');
+      videoElement.src = video;
+      videoElement.crossOrigin = 'anonymous';
+      
+      videoElement.addEventListener('loadeddata', () => {
+        // Seek to the middle of the video
+        videoElement.currentTime = videoElement.duration / 2;
+      });
+
+      videoElement.addEventListener('seeked', () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = videoElement.videoWidth;
+        canvas.height = videoElement.videoHeight;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+          const thumbnailUrl = canvas.toDataURL('image/jpeg');
+          setCachedThumbnail(video, thumbnailUrl);
+          resolve(thumbnailUrl);
+        }
+      });
+    });
+  };
+
+  useEffect(() => {
+    const generateThumbnails = async () => {
+      if (product?.videos) {
+        const thumbnails: { [key: string]: string } = {};
+        const loading: { [key: string]: boolean } = {};
+        
+        // Set loading state for all videos
+        product.videos.forEach(video => {
+          loading[video] = true;
+        });
+        setLoadingThumbnails(loading);
+
+        for (const video of product.videos) {
+          try {
+            const thumbnail = await generateVideoThumbnail(video);
+            thumbnails[video] = thumbnail;
+          } catch (error) {
+            console.error(`Error generating thumbnail for ${video}:`, error);
+          }
+          // Update loading state for this video
+          setLoadingThumbnails(prev => ({
+            ...prev,
+            [video]: false
+          }));
+        }
+        setVideoThumbnails(thumbnails);
+      }
+    };
+
+    generateThumbnails();
+  }, [product?.videos]);
 
   if (!product) {
     return <div>Product not found</div>;
@@ -298,9 +411,14 @@ const ProductDetails = () => {
               }}
             >
               <VideoThumbnailImage
-                src={mainImage}
-                alt="Play video"
+                src={videoThumbnails[video] || '/placeholder.jpg'}
+                alt="Video thumbnail"
               />
+              {loadingThumbnails[video] && (
+                <LoadingOverlay>
+                  Loading...
+                </LoadingOverlay>
+              )}
               <PlayButton>▶</PlayButton>
             </VideoThumbnail>
           ))}
