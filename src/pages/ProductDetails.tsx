@@ -241,6 +241,21 @@ const ProductDetails = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        handlePrev();
+      } else if (event.key === 'ArrowRight') {
+        handleNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedImage, selectedVideo]); // Re-run effect when selected media changes
+
   const getCachedThumbnail = (video: string): string | null => {
     try {
       const cached = localStorage.getItem(`video-thumbnail-${video}`);
