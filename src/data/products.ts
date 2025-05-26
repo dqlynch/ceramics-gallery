@@ -135,6 +135,12 @@ export const products: Product[] = [
     gallery: [
       '/images/copper-raku-planter/1.jpg',
       '/images/copper-raku-planter/2.jpg',
+      '/images/copper-raku-planter/3.jpg',
+      '/images/copper-raku-planter/4.jpg',
+    ],
+    videos: [
+      '/images/copper-raku-planter/5.mp4',
+      '/images/copper-raku-planter/6.mp4',
     ],
     dimensions: '3.5" x 5.5"',
     price: '$45',
