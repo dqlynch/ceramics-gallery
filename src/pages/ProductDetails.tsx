@@ -237,6 +237,10 @@ const ProductDetails = () => {
   const [videoThumbnails, setVideoThumbnails] = useState<{ [key: string]: string }>({});
   const [loadingThumbnails, setLoadingThumbnails] = useState<{ [key: string]: boolean }>({});
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const getCachedThumbnail = (video: string): string | null => {
     try {
       const cached = localStorage.getItem(`video-thumbnail-${video}`);
