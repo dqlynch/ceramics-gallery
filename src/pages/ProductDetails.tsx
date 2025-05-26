@@ -46,7 +46,7 @@ const GallerySection = styled.div`
 
 const MainImage = styled(motion.img)`
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 3/4;
   object-fit: cover;
   border-radius: 8px;
   grid-column: span 2;
@@ -54,7 +54,7 @@ const MainImage = styled(motion.img)`
 
 const ThumbnailImage = styled(motion.img)`
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 3/4;
   object-fit: cover;
   border-radius: 8px;
   cursor: pointer;
@@ -67,7 +67,7 @@ const ThumbnailImage = styled(motion.img)`
 
 const VideoPlayer = styled.video`
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 3/4;
   object-fit: cover;
   border-radius: 8px;
   grid-column: span 2;
@@ -109,7 +109,7 @@ const Price = styled.div`
 const VideoThumbnail = styled.div`
   position: relative;
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 3/4;
   cursor: pointer;
   border-radius: 8px;
   overflow: hidden;
@@ -136,27 +136,105 @@ const PlayButton = styled.div`
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 `;
 
+const NavigationArrow = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 2rem;
+  color: #666;
+  transition: all 0.2s ease;
+  z-index: 2;
+
+  &:hover {
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: translateY(-50%);
+  }
+`;
+
+const PrevArrow = styled(NavigationArrow)`
+  left: 10px;
+`;
+
+const NextArrow = styled(NavigationArrow)`
+  right: 10px;
+`;
+
+const MainMediaContainer = styled.div`
+  position: relative;
+  grid-column: span 2;
+`;
+
 const ProductDetails = () => {
   const { id } = useParams();
   const product = products.find(p => p.id === Number(id));
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [isPlayingVideo, setIsPlayingVideo] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
 
   if (!product) {
     return <div>Product not found</div>;
   }
 
-  const mainImage = selectedImage || product.mainImage;
+  const allMedia = [
+    ...product.gallery,
+    ...(product.videos || []).map(video => `video:${video}`)
+  ];
+  
+  const currentIndex = selectedImage 
+    ? allMedia.indexOf(selectedImage)
+    : selectedVideo 
+      ? allMedia.indexOf(`video:${selectedVideo}`)
+      : 0;
 
-  const handleThumbnailClick = (image: string) => {
-    if (image === 'video') {
-      setIsPlayingVideo(true);
-      setSelectedImage(null);
-    } else {
-      setIsPlayingVideo(false);
-      setSelectedImage(image);
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      const prevMedia = allMedia[currentIndex - 1];
+      if (prevMedia.startsWith('video:')) {
+        setSelectedVideo(prevMedia.replace('video:', ''));
+        setSelectedImage(null);
+      } else {
+        setSelectedVideo(null);
+        setSelectedImage(prevMedia);
+      }
     }
   };
+
+  const handleNext = () => {
+    if (currentIndex < allMedia.length - 1) {
+      const nextMedia = allMedia[currentIndex + 1];
+      if (nextMedia.startsWith('video:')) {
+        setSelectedVideo(nextMedia.replace('video:', ''));
+        setSelectedImage(null);
+      } else {
+        setSelectedVideo(null);
+        setSelectedImage(nextMedia);
+      }
+    }
+  };
+
+  const handleThumbnailClick = (media: string) => {
+    if (media.startsWith('video:')) {
+      setSelectedVideo(media.replace('video:', ''));
+      setSelectedImage(null);
+    } else {
+      setSelectedVideo(null);
+      setSelectedImage(media);
+    }
+  };
+
+  const mainImage = selectedImage || product.mainImage;
 
   return (
     <DetailsContainer>
@@ -165,24 +243,38 @@ const ProductDetails = () => {
       </BackButton>
       <ProductGrid>
         <GallerySection>
-          {isPlayingVideo && product.video ? (
-            <VideoPlayer
-              src={product.video}
-              controls
-              autoPlay
-              loop
-              muted
-              playsInline
-            />
-          ) : (
-            <MainImage
-              src={mainImage}
-              alt={product.title}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            />
-          )}
+          <MainMediaContainer>
+            {selectedVideo ? (
+              <VideoPlayer
+                src={selectedVideo}
+                controls
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            ) : (
+              <MainImage
+                src={mainImage}
+                alt={product.title}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              />
+            )}
+            <PrevArrow 
+              onClick={handlePrev}
+              disabled={currentIndex === 0}
+            >
+              ‹
+            </PrevArrow>
+            <NextArrow 
+              onClick={handleNext}
+              disabled={currentIndex === allMedia.length - 1}
+            >
+              ›
+            </NextArrow>
+          </MainMediaContainer>
           {product.gallery.map((image: string, index: number) => (
             <ThumbnailImage
               key={index}
@@ -197,11 +289,12 @@ const ProductDetails = () => {
               }}
             />
           ))}
-          {product.video && (
+          {product.videos?.map((video: string, index: number) => (
             <VideoThumbnail
-              onClick={() => handleThumbnailClick('video')}
+              key={`video-${index}`}
+              onClick={() => handleThumbnailClick(`video:${video}`)}
               style={{
-                opacity: isPlayingVideo ? 0.7 : 1,
+                opacity: video === selectedVideo ? 0.7 : 1,
               }}
             >
               <VideoThumbnailImage
@@ -210,7 +303,7 @@ const ProductDetails = () => {
               />
               <PlayButton>▶</PlayButton>
             </VideoThumbnail>
-          )}
+          ))}
         </GallerySection>
         <ProductInfo>
           <ProductTitle>{product.title}</ProductTitle>
