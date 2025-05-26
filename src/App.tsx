@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Gallery from './pages/Gallery';
@@ -37,6 +37,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Gallery />} />
               <Route path="/shop" element={<Shop />} />
+              <Route path="/shop/" element={<Navigate to="/shop" replace />} />
               <Route path="/product/:id" element={<ProductDetails />} />
             </Routes>
           </main>
