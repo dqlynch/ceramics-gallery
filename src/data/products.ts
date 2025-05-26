@@ -18,6 +18,12 @@ export const products: Product[] = [
     gallery: [
       '/images/teapot-2/1.jpg',
       '/images/teapot-2/2.jpg',
+      '/images/teapot-2/3.jpg',
+      '/images/teapot-2/4.jpg',
+    ],
+    videos: [
+      '/images/teapot-2/5.mp4',
+      '/images/teapot-2/6.mp4',
     ],
     dimensions: '350mL',
     price: '$80',
@@ -48,8 +54,12 @@ export const products: Product[] = [
       '/images/teapot-1/1.jpg',
       '/images/teapot-1/2.jpg',
       '/images/teapot-1/3.jpg',
+      '/images/teapot-1/5.jpg',
     ],
-    videos: ['/images/teapot-1/4.mp4'],
+    videos: [
+      '/images/teapot-1/4.mp4',
+      '/images/teapot-1/6.mp4',
+    ],
     dimensions: '500mL',
     price: '$60',
     description: 'A medium sized teapot, perfect for sharing tea or having a couple cups. The outside is left unglazed to show off the smooth, rich brown clay body, and to contrast the bright Carribean liner glaze. The inner gallery fits an included 75mm inset stainless steel strainer.\n\nFood, microwave, and dishwasher safe.',
