@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { products } from '../data/products';
 
 const DetailsContainer = styled.div`
@@ -126,10 +126,6 @@ const VideoThumbnailImage = styled.img`
   object-fit: cover;
 `;
 
-const VideoThumbnailCanvas = styled.canvas`
-  display: none;
-`;
-
 const PlayButton = styled.div`
   position: absolute;
   top: 50%;
@@ -202,7 +198,6 @@ const ProductDetails = () => {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const [videoThumbnails, setVideoThumbnails] = useState<{ [key: string]: string }>({});
   const [loadingThumbnails, setLoadingThumbnails] = useState<{ [key: string]: boolean }>({});
-  const videoRefs = useRef<{ [key: string]: HTMLVideoElement }>({});
 
   const getCachedThumbnail = (video: string): string | null => {
     try {
