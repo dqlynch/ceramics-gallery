@@ -65,6 +65,14 @@ const ThumbnailImage = styled(motion.img)`
   }
 `;
 
+const VideoPlayer = styled.video`
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+  grid-column: span 2;
+`;
+
 const ProductInfo = styled.div`
   padding: ${props => props.theme.spacing.lg};
 `;
@@ -98,16 +106,57 @@ const Price = styled.div`
   margin-bottom: ${props => props.theme.spacing.lg};
 `;
 
+const VideoThumbnail = styled.div`
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+
+  &:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+  }
+`;
+
+const VideoThumbnailImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const PlayButton = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 2rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+`;
+
 const ProductDetails = () => {
   const { id } = useParams();
   const product = products.find(p => p.id === Number(id));
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isPlayingVideo, setIsPlayingVideo] = useState(false);
 
   if (!product) {
     return <div>Product not found</div>;
   }
 
   const mainImage = selectedImage || product.mainImage;
+
+  const handleThumbnailClick = (image: string) => {
+    if (image === 'video') {
+      setIsPlayingVideo(true);
+      setSelectedImage(null);
+    } else {
+      setIsPlayingVideo(false);
+      setSelectedImage(image);
+    }
+  };
 
   return (
     <DetailsContainer>
@@ -116,13 +165,24 @@ const ProductDetails = () => {
       </BackButton>
       <ProductGrid>
         <GallerySection>
-          <MainImage
-            src={mainImage}
-            alt={product.title}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          />
+          {isPlayingVideo && product.video ? (
+            <VideoPlayer
+              src={product.video}
+              controls
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+          ) : (
+            <MainImage
+              src={mainImage}
+              alt={product.title}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            />
+          )}
           {product.gallery.map((image: string, index: number) => (
             <ThumbnailImage
               key={index}
@@ -130,13 +190,27 @@ const ProductDetails = () => {
               alt={`${product.title} - view ${index + 1}`}
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
-              onClick={() => setSelectedImage(image)}
+              onClick={() => handleThumbnailClick(image)}
               style={{
                 opacity: image === mainImage ? 0.7 : 1,
                 cursor: 'pointer',
               }}
             />
           ))}
+          {product.video && (
+            <VideoThumbnail
+              onClick={() => handleThumbnailClick('video')}
+              style={{
+                opacity: isPlayingVideo ? 0.7 : 1,
+              }}
+            >
+              <VideoThumbnailImage
+                src={mainImage}
+                alt="Play video"
+              />
+              <PlayButton>▶</PlayButton>
+            </VideoThumbnail>
+          )}
         </GallerySection>
         <ProductInfo>
           <ProductTitle>{product.title}</ProductTitle>
