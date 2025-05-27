@@ -75,10 +75,10 @@ export const products: Product[] = [
   {
     id: 8,
     title: 'Hummingbird Bud Vase',
-    mainImage: '/images/hummingbird-bud-vase/1.jpg',
+    mainImage: '/images/hummingbird-bud-vase/1.png',
     gallery: [
-      '/images/hummingbird-bud-vase/1.jpg',
-      '/images/hummingbird-bud-vase/2.jpg',
+      '/images/hummingbird-bud-vase/1.png',
+      '/images/hummingbird-bud-vase/2.png',
     ],
     dimensions: '5" x 4.5"',
     price: '$75',
