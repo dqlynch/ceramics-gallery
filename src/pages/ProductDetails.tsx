@@ -281,14 +281,13 @@ const ProductDetails = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [selectedImage, selectedVideo]); // Re-run effect when selected media changes
+  }, [selectedImage, selectedVideo]);
 
   const getCachedThumbnail = (video: string): string | null => {
     try {
       const cached = localStorage.getItem(`video-thumbnail-${video}`);
       if (cached) {
         const { timestamp, dataUrl } = JSON.parse(cached);
-        // Cache for 24 hours
         if (Date.now() - timestamp < 24 * 60 * 60 * 1000) {
           return dataUrl;
         }
@@ -312,7 +311,6 @@ const ProductDetails = () => {
 
   const generateVideoThumbnail = (video: string) => {
     return new Promise<string>((resolve) => {
-      // Check cache first
       const cached = getCachedThumbnail(video);
       if (cached) {
         resolve(cached);
@@ -324,7 +322,6 @@ const ProductDetails = () => {
       videoElement.crossOrigin = 'anonymous';
       
       videoElement.addEventListener('loadeddata', () => {
-        // Seek to the middle of the video
         videoElement.currentTime = videoElement.duration / 2;
       });
 
@@ -349,7 +346,6 @@ const ProductDetails = () => {
         const thumbnails: { [key: string]: string } = {};
         const loading: { [key: string]: boolean } = {};
         
-        // Set loading state for all videos
         product.videos.forEach(video => {
           loading[video] = true;
         });
@@ -362,7 +358,6 @@ const ProductDetails = () => {
           } catch (error) {
             console.error(`Error generating thumbnail for ${video}:`, error);
           }
-          // Update loading state for this video
           setLoadingThumbnails(prev => ({
             ...prev,
             [video]: false
@@ -426,8 +421,6 @@ const ProductDetails = () => {
     }
   };
 
-  const mainImage = selectedImage || product.mainImage;
-
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     
@@ -445,6 +438,8 @@ const ProductDetails = () => {
   const handleMouseLeave = () => {
     setIsMagnifierVisible(false);
   };
+
+  const mainImage = selectedImage || product.mainImage;
 
   return (
     <DetailsContainer>
