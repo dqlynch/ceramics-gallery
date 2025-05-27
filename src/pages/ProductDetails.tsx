@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { products } from '../data/products';
 
 const DetailsContainer = styled.div`
@@ -229,6 +229,29 @@ const InstagramSection = styled.div`
   color: ${props => props.theme.colors.text};
 `;
 
+const MagnifierContainer = styled.div`
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/4;
+  grid-column: span 2;
+`;
+
+const Magnifier = styled.div<{ x: number; y: number; visible: boolean }>`
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border: 2px solid #666;
+  border-radius: 50%;
+  pointer-events: none;
+  display: ${props => props.visible ? 'block' : 'none'};
+  left: ${props => props.x}px;
+  top: ${props => props.y}px;
+  transform: translate(-50%, -50%);
+  background-repeat: no-repeat;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  z-index: 10;
+`;
+
 const ProductDetails = () => {
   const { id } = useParams();
   const product = products.find(p => p.id === Number(id));
@@ -236,6 +259,10 @@ const ProductDetails = () => {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const [videoThumbnails, setVideoThumbnails] = useState<{ [key: string]: string }>({});
   const [loadingThumbnails, setLoadingThumbnails] = useState<{ [key: string]: boolean }>({});
+  const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
+  const [isMagnifierVisible, setIsMagnifierVisible] = useState(false);
+  const magnifierRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -401,6 +428,24 @@ const ProductDetails = () => {
 
   const mainImage = selectedImage || product.mainImage;
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    setMagnifierPosition({ x, y });
+  };
+
+  const handleMouseEnter = () => {
+    setIsMagnifierVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsMagnifierVisible(false);
+  };
+
   return (
     <DetailsContainer>
       <BackButton to="/shop">
@@ -419,13 +464,33 @@ const ProductDetails = () => {
                 playsInline
               />
             ) : (
-              <MainImage
-                src={mainImage}
-                alt={product.title}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              />
+              <MagnifierContainer
+                ref={containerRef}
+                onMouseMove={handleMouseMove}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <MainImage
+                  src={mainImage}
+                  alt={product.title}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                />
+                <Magnifier
+                  ref={magnifierRef}
+                  x={magnifierPosition.x}
+                  y={magnifierPosition.y}
+                  visible={isMagnifierVisible}
+                  style={{
+                    backgroundImage: `url(${mainImage})`,
+                    backgroundSize: containerRef.current ? 
+                      `${containerRef.current.offsetWidth * 4}px ${containerRef.current.offsetHeight * 4}px` :
+                      '400% 400%',
+                    backgroundPosition: `-${magnifierPosition.x * 4 - 150}px -${magnifierPosition.y * 4 - 150}px`
+                  }}
+                />
+              </MagnifierContainer>
             )}
             <PrevArrow 
               onClick={handlePrev}
