@@ -127,6 +127,7 @@ export const products: Product[] = [
     description: 'A small planter created during SPS\'s Raku workshop. The piece is removed from the kiln while still hot and placed directly into a reduction environment. The smoke interacts with the molten copper glaze to create interesting patterns. This planter has a hole at the bottom for drainage.\n\nNot food safe due to the copper glaze.',
     material: 'Stoneware (SPS Raku II), Copper glaze',
     firing_type: 'Raku Firing',
+    sold: true,
   },
   {
     id: 10,
@@ -156,6 +157,7 @@ export const products: Product[] = [
     description: 'Large dark blue bowl with flux splattered on the rim. The flux drips and interacts with the base Stormy Night glaze during firing, creating interesting and dynamic patterns. It came out a bit oblong, but serves as a great decorative pot around a nursery pot or serving bowl.\n\nFood, microwave, and dishwasher safe.',
     material: 'Stoneware (Klamath Brown)',
     firing_type: '∆5',
+    sold: true,
   },
   {
     id: 7,
