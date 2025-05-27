@@ -81,6 +81,18 @@ const ProductTitle = styled.h1`
   font-size: ${props => props.theme.typography.h1.fontSize};
   color: ${props => props.theme.colors.primary};
   margin-bottom: ${props => props.theme.spacing.md};
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.md};
+`;
+
+const SoldBadge = styled.div`
+  background: ${props => props.theme.colors.primary};
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
 `;
 
 const ProductDescription = styled.p`
@@ -445,6 +457,7 @@ const ProductDetails = () => {
     <DetailsContainer>
       <BackButton to="/shop">
         <BackArrow>←</BackArrow>
+        Back to Shop
       </BackButton>
       <ProductGrid>
         <GallerySection>
@@ -536,7 +549,10 @@ const ProductDetails = () => {
           ))}
         </GallerySection>
         <ProductInfo>
-          <ProductTitle>{product.title}</ProductTitle>
+          <ProductTitle>
+            {product.title}
+            {product.sold && <SoldBadge>SOLD</SoldBadge>}
+          </ProductTitle>
           <Price>{product.price}</Price>
           <ProductDescription>{product.description}</ProductDescription>
           <ProductDetailsSection>

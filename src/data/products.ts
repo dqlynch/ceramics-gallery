@@ -9,6 +9,7 @@ export interface Product {
   material: string;
   videos?: string[];
   firing_type: string;
+  sold?: boolean;
 }
 
 export const products: Product[] = [
@@ -71,6 +72,7 @@ export const products: Product[] = [
     description: 'A medium sized teapot, perfect for sharing tea or having a couple cups. The outside is left unglazed to show off the smooth, rich brown clay body, and to contrast the bright Carribean liner glaze. The inner gallery fits an included 75mm inset stainless steel strainer.\n\nFood, microwave, and dishwasher safe.',
     material: 'Stoneware (Klamath Brown)',
     firing_type: '∆5',
+    sold: true,
   },
   {
     id: 8,

@@ -28,6 +28,20 @@ const ProductCard = styled.div`
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+`;
+
+const SoldBadge = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: ${props => props.theme.colors.primary};
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  z-index: 1;
 `;
 
 const ProductImage = styled.img`
@@ -79,6 +93,7 @@ const Shop = () => {
           >
             <ProductLink to={`/product/${product.id}`}>
               <ProductImage src={product.mainImage} alt={product.title} />
+              {product.sold && <SoldBadge>SOLD</SoldBadge>}
               <ProductInfo>
                 <ProductTitle>{product.title}</ProductTitle>
                 <ProductPrice>{product.price}</ProductPrice>
