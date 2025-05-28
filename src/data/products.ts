@@ -32,6 +32,7 @@ export const products: Product[] = [
     description: 'Smaller angular teapot. The unglazed outside shows off the beautiful raw clay body of Seattle Pottery Supply\'s Eclipse clay. The inner gallery fits an included 75mm inset stainless steel strainer. Pours really well and is my current goto teapot for a single cup of tea.\n\nUnglazed outside with Orchid liner glaze inside. Food, microwave, and dishwasher safe.',
     material: 'Stoneware (SPS Eclipse)',
     firing_type: '∆5',
+    sold: true,
   },
   {
     id: 2,
@@ -107,6 +108,7 @@ export const products: Product[] = [
     description: 'Another vase made during SPS\'s Raku workshop. This was made with a white crackle glaze. The piece is removed from the kiln while still hot. We blow on the glaze, rapidly cooling it and creating cracks as it shrinks. It\'s then placed in a reduction environment with combustible materials to finish cooling. The soot produced in the reduction environment is trapped in the clay, adding a smokey contrast in the web of cracks across the surface.\n\nRaku pieces are not fully vitrified and are not food safe. The clay will absorb water slowly over time.',
     material: 'Stoneware (SPS Raku II)',
     firing_type: 'Raku Firing',
+    sold: true,
   },
   {
     id: 9,
@@ -172,6 +174,7 @@ export const products: Product[] = [
     description: 'A small flower vase. An early piece of mine but maybe the first form I was proud of. Some spiral cracking on the bottom, but still water-tight.\n\nFood, microwave, and dishwasher safe.',
     material: 'Stoneware (SPS Sea Mix 6)',
     firing_type: '∆5',
+    sold: true,
   },
   {
     id: 6,
@@ -201,5 +204,6 @@ export const products: Product[] = [
     description: 'My first finished piece! A small vessel (no drainage) with a light purple, slightly crazed glaze. Comes with some Tradescantia Zebrina happily growing inside.\n\nFood, microwave, and dishwasher safe.\n\nPlant care: water when dry, as much light you can get it. Very easy plant and grows/roots extremely quickly.',
     material: 'Stoneware (SPS Sea Mix 6)',
     firing_type: '∆5',
+    sold: true,
   }
 ]; 
