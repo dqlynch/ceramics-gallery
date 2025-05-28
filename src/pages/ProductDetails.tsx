@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import { products } from '../data/products';
 
@@ -264,6 +264,76 @@ const Magnifier = styled.div<{ x: number; y: number; visible: boolean }>`
   z-index: 10;
 `;
 
+const BuyButton = styled.button`
+  background: ${props => props.theme.colors.primary};
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  margin-top: ${props => props.theme.spacing.lg};
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const ModalOverlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+const ModalContent = styled(motion.div)`
+  background: white;
+  padding: ${props => props.theme.spacing.xl};
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+`;
+
+const ModalTitle = styled.h2`
+  color: ${props => props.theme.colors.primary};
+  margin-bottom: ${props => props.theme.spacing.md};
+`;
+
+const ModalText = styled.p`
+  color: ${props => props.theme.colors.text};
+  margin-bottom: ${props => props.theme.spacing.lg};
+  line-height: 1.5;
+`;
+
+const CloseButton = styled.button`
+  background: ${props => props.theme.colors.primary};
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+`;
+
 const ProductDetails = () => {
   const { id } = useParams();
   const product = products.find(p => p.id === Number(id));
@@ -273,6 +343,7 @@ const ProductDetails = () => {
   const [loadingThumbnails, setLoadingThumbnails] = useState<{ [key: string]: boolean }>({});
   const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
   const [isMagnifierVisible, setIsMagnifierVisible] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const magnifierRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -564,6 +635,12 @@ const ProductDetails = () => {
               {product.firing_type}
             </DetailItem>
           </ProductDetailsSection>
+          <BuyButton 
+            onClick={() => setShowModal(true)}
+            disabled={product.sold}
+          >
+            {product.sold ? 'Sold' : 'Buy Now'}
+          </BuyButton>
           <InstagramSection>
             Interested? Please reach out to me on{' '}
             <InstagramLink 
@@ -580,6 +657,43 @@ const ProductDetails = () => {
           </InstagramSection>
         </ProductInfo>
       </ProductGrid>
+
+      <AnimatePresence>
+        {showModal && (
+          <ModalOverlay
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowModal(false)}
+          >
+            <ModalContent
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={e => e.stopPropagation()}
+            >
+              <ModalTitle>Interested?</ModalTitle>
+              <ModalText>
+                Please reach out to me on{' '}
+                <InstagramLink 
+                  href="https://www.instagram.com/d.q.lynch/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                  Instagram
+                </InstagramLink>
+                !
+              </ModalText>
+              <CloseButton onClick={() => setShowModal(false)}>
+                Close
+              </CloseButton>
+            </ModalContent>
+          </ModalOverlay>
+        )}
+      </AnimatePresence>
     </DetailsContainer>
   );
 };
