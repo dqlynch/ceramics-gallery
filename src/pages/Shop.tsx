@@ -78,7 +78,7 @@ const ProductLink = styled(Link)`
   text-decoration: none;
 `;
 
-const MotionProductCard = motion(ProductCard);
+const MotionProductCard = motion.create(ProductCard);
 
 const Shop = () => {
   return (

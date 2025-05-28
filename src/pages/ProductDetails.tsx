@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import { products } from '../data/products';
+import venmoLogo from '../assets/venmo_v.png';
 
 const DetailsContainer = styled.div`
   max-width: 1200px;
@@ -331,6 +332,27 @@ const CloseButton = styled.button`
 
   &:hover {
     opacity: 0.9;
+  }
+`;
+
+const VenmoLink = styled.a`
+  color: ${props => props.theme.colors.primary};
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  img {
+    width: 14px;
+    height: 14px;
+    position: relative;
+    top: 2px;
   }
 `;
 
@@ -674,6 +696,10 @@ const ProductDetails = () => {
             >
               <ModalTitle>Interested?</ModalTitle>
               <ModalText>
+                <p>
+                  Online purchasing currently isn't available. 
+                </p>
+                <p>
                 Please reach out to me on{' '}
                 <InstagramLink 
                   href="https://www.instagram.com/d.q.lynch/" 
@@ -686,6 +712,17 @@ const ProductDetails = () => {
                   Instagram
                 </InstagramLink>
                 !
+                  Payment through{' '}
+                  <VenmoLink 
+                    href="https://venmo.com/Dylan-Lynch-2" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                  >
+                    <img src={venmoLogo} alt="Venmo" />
+                    Venmo
+                  </VenmoLink>
+                  .
+                </p>
               </ModalText>
               <CloseButton onClick={() => setShowModal(false)}>
                 Close

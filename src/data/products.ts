@@ -88,6 +88,7 @@ export const products: Product[] = [
     description: 'A pale blue bud vase with a carved hummingbird. The hummingbird was carved into the greenware after trimming, and then underglazed between two bisque firings. A mix of three celadon glazes was applied separately to each part of the hummingbird to get the final coloring. You can still see and feel the carved texture through the celadon glazes.\n\nFood, microwave, and dishwasher safe.',
     material: 'Porcelain (Dove)',
     firing_type: '∆5',
+    sold: true,
   },
   {
     id: 5,
