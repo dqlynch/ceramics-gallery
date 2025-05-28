@@ -14,9 +14,9 @@ const TitleManager = () => {
   useEffect(() => {
     let title = 'Dylan Lynch Ceramics';
     
-    if (location.pathname === '/') {
+    if (location.pathname === '/gallery') {
       title = 'Gallery | Dylan Lynch Ceramics';
-    } else if (location.pathname === '/shop' || location.pathname.startsWith('/product/')) {
+    } else if (location.pathname === '/' || location.pathname === '/shop' || location.pathname.startsWith('/product/')) {
       title = 'Shop | Dylan Lynch Ceramics';
     }
 
@@ -35,12 +35,13 @@ function App() {
           <Navbar />
           <main>
             <Routes>
-              <Route path="/" element={<Gallery />} />
+              <Route path="/" element={<Shop />} />
               <Route path="/shop" element={<Shop />} />
+              <Route path="/gallery" element={<Gallery />} />
               <Route path="/product/:id" element={<ProductDetails />} />
             </Routes>
           </main>
-      </div>
+        </div>
       </Router>
     </ThemeProvider>
   );
