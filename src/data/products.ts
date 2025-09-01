@@ -53,6 +53,7 @@ export const products: Product[] = [
     description: 'A pair of bud vases. I made these as part of a Raku workshop with SPS. The pieces were removed from the kiln while still hot—around 1600F—and then horse hair was manually burned onto the surface. The resulting soot is trapped in the clay and leaves unique patterns.\n\nRaku pieces are not fully vitrified and are not food safe. The clay will absorb water slowly over time.',
     material: 'Stoneware (SPS Raku II)',
     firing_type: 'Raku Firing',
+    sold: true,
   },
   {
     id: 3,
@@ -145,6 +146,7 @@ export const products: Product[] = [
     description: 'A taller bud vas with a tapering narrow neck. Enough room for a couple small stems. You\'ll have to imagine it with some fresher flowers!\n\nFood, microwave, and dishwasher safe.',
     material: 'Porcelain (Dove)',
     firing_type: '∆5',
+    sold: true,
   },
   {
     id: 4,
@@ -191,6 +193,7 @@ export const products: Product[] = [
     description: 'Vase with an unglazed textured surface. Sodium silicate is applied to the piece on the wheel, drying the outside surface. The vase is then shaped from the inside, expanding and cracking the outer layer to create the distinctive cracked-mud surface.\n\nNot food safe due to the metallic outer glaze.',
     material: 'Stoneware (Klamath Brown)',
     firing_type: '∆5',
+    sold: true,
   },
   {
     id: 11,
