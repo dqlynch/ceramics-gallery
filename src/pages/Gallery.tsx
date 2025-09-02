@@ -57,6 +57,22 @@ const Gallery = () => {
           '/images/gallery/15.jpg',
           '/images/gallery/16.jpg',
           '/images/gallery/17.jpg',
+          '/images/gallery/18.jpg',
+          '/images/gallery/19.jpg',
+          '/images/gallery/20.jpg',
+          '/images/gallery/21.jpg',
+          '/images/gallery/22.jpg',
+          '/images/gallery/23.jpg',
+          '/images/gallery/24.jpg',
+          '/images/gallery/25.jpg',
+          '/images/gallery/26.jpg',
+          '/images/gallery/27.jpg',
+          '/images/gallery/28.jpg',
+          '/images/gallery/29.jpg',
+          '/images/gallery/30.jpg',
+          '/images/gallery/31.jpg',
+          '/images/gallery/32.jpg',
+          '/images/gallery/33.jpg',
         ];
 
         const imagePromises = imageFiles.map(async (src) => {

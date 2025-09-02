@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Gallery from './pages/Gallery';
@@ -13,10 +13,10 @@ const TitleManager = () => {
 
   useEffect(() => {
     let title = 'Dylan Lynch Ceramics';
-    
+
     if (location.pathname === '/gallery') {
       title = 'Gallery | Dylan Lynch Ceramics';
-    } else if (location.pathname === '/' || location.pathname === '/shop' || location.pathname.startsWith('/product/')) {
+    } else if (location.pathname === '/shop' || location.pathname.startsWith('/product/')) {
       title = 'Shop | Dylan Lynch Ceramics';
     }
 
@@ -35,7 +35,7 @@ function App() {
           <Navbar />
           <main>
             <Routes>
-              <Route path="/" element={<Shop />} />
+              <Route path="/" element={<Navigate to="/gallery" replace />} />
               <Route path="/shop" element={<Shop />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/product/:id" element={<ProductDetails />} />

@@ -69,9 +69,9 @@ const Navbar = () => {
   return (
     <Nav>
       <NavContainer>
-        <Logo to="/">Dylan Lynch Ceramics</Logo>
+        <Logo to="/gallery">Dylan Lynch Ceramics</Logo>
         <NavLinks>
-          <NavLink to="/">Shop</NavLink>
+          <NavLink to="/shop">Shop</NavLink>
           <NavLink to="/gallery">Gallery</NavLink>
           <SocialLink 
             href="https://www.instagram.com/d.q.lynch/" 
