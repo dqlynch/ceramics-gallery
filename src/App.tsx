@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Gallery from './pages/Gallery';
 import Shop from './pages/Shop';
 import ProductDetails from './pages/ProductDetails';
+import SecretSanta from './pages/SecretSanta';
 import { ThemeProvider } from '@emotion/react';
 import { theme } from './theme';
 import './styles/masonry.css';
@@ -18,6 +19,8 @@ const TitleManager = () => {
       title = 'Gallery | Dylan Lynch Ceramics';
     } else if (location.pathname === '/shop' || location.pathname.startsWith('/product/')) {
       title = 'Shop | Dylan Lynch Ceramics';
+    } else if (location.pathname === '/secret-santa') {
+      title = 'Secret Santa | Dylan Lynch Ceramics';
     }
 
     document.title = title;
@@ -39,6 +42,7 @@ function App() {
               <Route path="/shop" element={<Shop />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/product/:id" element={<ProductDetails />} />
+              <Route path="/secret-santa" element={<SecretSanta />} />
             </Routes>
           </main>
         </div>
