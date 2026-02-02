@@ -89,6 +89,8 @@ const Gallery = () => {
           '/images/gallery/47.jpg',
           '/images/gallery/48.jpg',
           '/images/gallery/49.jpg',
+          '/images/gallery/50.jpg',
+          '/images/gallery/51.jpg',
         ];
 
         const imagePromises = imageFiles.map(async (src) => {
