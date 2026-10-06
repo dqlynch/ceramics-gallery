@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { galleryPhotos } from '../data/gallery';
 
 const GalleryContainer = styled.div`
   max-width: 1600px;
@@ -13,9 +13,9 @@ const GalleryGrid = styled.div`
   gap: 16px;
 `;
 
-const GalleryItem = styled.div<{ $isLandscape: boolean }>`
-  grid-column: ${props => props.$isLandscape ? 'span 2' : 'span 1'};
-  aspect-ratio: ${props => props.$isLandscape ? '1.625532' : '0.8'};
+const GalleryItem = styled.div<{ $isWide: boolean }>`
+  grid-column: ${props => props.$isWide ? 'span 2' : 'span 1'};
+  aspect-ratio: ${props => props.$isWide ? '1.625532' : '0.8'};
   overflow: hidden;
 `;
 
@@ -26,126 +26,24 @@ const GalleryImage = styled.img`
   object-position: center top;
 `;
 
-interface ImageWithSize {
-  src: string;
-  width: number;
-  height: number;
-  isLandscape: boolean;
-}
+const Gallery = () => (
+  <GalleryContainer>
+    <GalleryGrid>
+      {galleryPhotos.map(photo => (
+        <GalleryItem key={photo.src} $isWide={photo.span === 2}>
+          <GalleryImage
+            src={photo.src}
+            srcSet={photo.srcset}
+            sizes={photo.span === 2 ? '(max-width: 1600px) 64vw, 1030px' : '(max-width: 1600px) 32vw, 510px'}
+            width={photo.width}
+            height={photo.height}
+            alt={photo.name}
+            loading="lazy"
+          />
+        </GalleryItem>
+      ))}
+    </GalleryGrid>
+  </GalleryContainer>
+);
 
-const Gallery = () => {
-  const [images, setImages] = useState<ImageWithSize[]>([]);
-
-  useEffect(() => {
-    const loadImages = async () => {
-      try {
-        const imageFiles = [
-          '/images/gallery/1.jpg',
-          '/images/gallery/2.jpg',
-          '/images/gallery/3.jpg',
-          '/images/gallery/4.jpg',
-          '/images/gallery/5.jpg',
-          '/images/gallery/6.jpg',
-          '/images/gallery/7.jpg',
-          '/images/gallery/8.jpg',
-          '/images/gallery/9.jpg',
-          '/images/gallery/10.jpg',
-          '/images/gallery/11.jpg',
-          '/images/gallery/12.jpg',
-          '/images/gallery/13.jpg',
-          '/images/gallery/14.jpg',
-          '/images/gallery/15.jpg',
-          '/images/gallery/16.jpg',
-          '/images/gallery/17.jpg',
-          '/images/gallery/18.jpg',
-          '/images/gallery/19.jpg',
-          '/images/gallery/20.jpg',
-          '/images/gallery/21.jpg',
-          '/images/gallery/22.jpg',
-          '/images/gallery/23.jpg',
-          '/images/gallery/24.jpg',
-          '/images/gallery/25.jpg',
-          '/images/gallery/26.jpg',
-          '/images/gallery/27.jpg',
-          '/images/gallery/28.jpg',
-          '/images/gallery/29.jpg',
-          '/images/gallery/30.jpg',
-          '/images/gallery/31.jpg',
-          '/images/gallery/32.jpg',
-          '/images/gallery/33.jpg',
-          '/images/gallery/34.jpg',
-          '/images/gallery/35.jpg',
-          '/images/gallery/36.jpg',
-          '/images/gallery/37.jpg',
-          '/images/gallery/38.jpg',
-          '/images/gallery/39.jpg',
-          '/images/gallery/40.jpg',
-          '/images/gallery/41.jpg',
-          '/images/gallery/42.jpg',
-          '/images/gallery/43.jpg',
-          '/images/gallery/44.jpg',
-          '/images/gallery/45.jpg',
-          '/images/gallery/46.jpg',
-          '/images/gallery/47.jpg',
-          '/images/gallery/48.jpg',
-          '/images/gallery/49.jpg',
-          '/images/gallery/50.jpg',
-          '/images/gallery/51.jpg',
-        ];
-
-        const imagePromises = imageFiles.map(async (src) => {
-          return new Promise<ImageWithSize>((resolve) => {
-            const img = new Image();
-            img.onload = () => {
-              const aspectRatio = img.width / img.height;
-              resolve({ 
-                src, 
-                width: img.width, 
-                height: img.height,
-                isLandscape: aspectRatio > 1.5
-              });
-            };
-            img.onerror = () => {
-              console.error(`Failed to load image: ${src}`);
-              resolve({ 
-                src, 
-                width: 1, 
-                height: 1,
-                isLandscape: false
-              }); // Fallback
-            };
-            img.src = src;
-          });
-        });
-
-        const loadedImages = await Promise.all(imagePromises);
-        setImages(loadedImages);
-      } catch (error) {
-        console.error('Error loading gallery images:', error);
-      }
-    };
-
-    loadImages();
-  }, []);
-
-  return (
-    <GalleryContainer>
-      <GalleryGrid>
-        {images.map((image, index) => (
-          <GalleryItem 
-            key={index}
-            $isLandscape={image.isLandscape}
-          >
-            <GalleryImage 
-              src={image.src} 
-              alt={`Gallery image ${index + 1}`}
-              loading="lazy"
-            />
-          </GalleryItem>
-        ))}
-      </GalleryGrid>
-    </GalleryContainer>
-  );
-};
-
-export default Gallery; 
+export default Gallery;
