@@ -17,6 +17,20 @@ const ShopTitle = styled.h1`
   border-bottom: 1px solid ${props => props.theme.colors.secondary};
 `;
 
+const CommissionNote = styled.p`
+  margin: 0 0 ${props => props.theme.spacing.lg};
+  padding: ${props => props.theme.spacing.md};
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+  text-align: center;
+  color: ${props => props.theme.colors.text};
+
+  a {
+    color: ${props => props.theme.colors.primary};
+    font-weight: 500;
+  }
+`;
+
 const ProductGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -84,6 +98,13 @@ const Shop = () => {
   return (
     <ShopContainer>
       <ShopTitle>Shop</ShopTitle>
+      <CommissionNote>
+        For commissions, please reach out to{' '}
+        <a href="https://www.instagram.com/d.q.lynch/" target="_blank" rel="noopener noreferrer">
+          @d.q.lynch
+        </a>{' '}
+        on Instagram.
+      </CommissionNote>
       <ProductGrid>
         {products.map((product) => (
           <MotionProductCard
